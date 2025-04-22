@@ -1,12 +1,16 @@
 import { useReducer, useEffect } from "react";
 import Header from "./components/Header";
 import Main from "./components/Main";
+import Loader from "./components/Loader";
+import Error from "./components/Error";
+import Ready from "./components/Ready";
+import Questions from "./components/Questions";
 
 const initialState = {
   questions: [],
-
-  // 'loading, error, ready, active, finished'
   status: "loading",
+  index: 0,
+  answer: null,
 };
 
 function reducer(state, action) {
@@ -20,7 +24,19 @@ function reducer(state, action) {
     case "dataFailed":
       return {
         ...state,
-        status: "Error",
+        status: "error",
+      };
+
+    case "start":
+      return {
+        ...state,
+        status: "active",
+      };
+
+    case "newAnswer":
+      return {
+        ...state,
+        answer: action.payload,
       };
     default:
       throw new Error("Action Unknown");
@@ -28,36 +44,34 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  useEffect(
-    function () {
-      const fetchingQuestions = async function () {
-        try {
-          const response = await fetch("http://localhost:5000/questions");
-
-          if (!response.ok) {
-            throw new Error(`Fetching Error: ${response.status}`);
-          }
-          const data = await response.json();
-          dispatch({ type: "dataReceived", payload: data });
-          console.log(data);
-        } catch (err) {
-          dispatch({type: "dataFailed"});
-        }
-      };
-      fetchingQuestions();
-    },
-    [dispatch]
+  const [{ questions, status, index, answer }, dispatch] = useReducer(
+    reducer,
+    initialState
   );
 
+  const numberOfQuestions = questions.length;
+
+  useEffect(function () {
+    fetch("http://localhost:5000/questions")
+      .then((res) => res.json())
+      .then((data) => dispatch({ type: "dataReceived", payload: data }))
+      .catch((err) => dispatch({ type: "dataFailed" }));
+  }, []);
+
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center bg-slate-700 w-full h-screen text-white">
       <Header />
       <Main>
-        <p>Questions</p>
-        <p>1/15</p>
-  
+        {status === "loading" && <Loader />}
+        {status === "error" && <Error />}
+        {status === "ready" && (
+          <Ready numQuestions={numberOfQuestions} dispatch={dispatch} />
+        )}
+        {status === "active" && (
+          <Questions
+            question={questions[index]}
+          />
+        )}
       </Main>
     </div>
   );
