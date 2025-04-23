@@ -1,12 +1,23 @@
-# React + Vite
+# 🧠 React Quiz App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fully functional and interactive **Quiz Application** built using **React**. This app allows users to answer multiple-choice questions, get immediate feedback, and track their progress throughout the quiz.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 🎯 Dynamic question loading from an API (e.g., `json-server`)
+- ✅ Real-time answer feedback (correct/wrong indication)
+- 📊 Progress tracking with score and percentage
+- ⏱ Optional timer and question countdown (if implemented)
+- 🎨 Clean and responsive UI with **Tailwind CSS**
+- ⚛️ State management using React's `useReducer` and `useEffect`
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠 Tech Stack
+
+- **React** (functional components & hooks)
+- **Tailwind CSS** (utility-first styling)
+- **json-server** (for fake REST API)
+- **React Spinners** (optional, for loading indicators)
